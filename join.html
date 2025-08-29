@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="join.css" />
+</head>
+<body>
+  <nav>
+    <a href="/index.html">
+      <div class="logo">
+        <img src="/img/logo.png" alt="Logo" class="logo-image" />
+        <div class="logoText">Connect Abk</div>
+      </div>
+    </a>
+    <ul>
+      <a href="/"><li>Home</li></a>
+      <a href="/"><li>Join</li></a>
+    </ul>
+    <div>
+      <a href="/search.html">
+        <button type="button" class="connect">Connect</button>
+      </a>
+    </div>
+  </nav>
+
+  <div class="container signup-bg">
+    <img src="/img/joinBG.png" alt="" class="background-image">
+  </div>
+
+  <div class="form-card">
+    <div class="signup-title">Sign Up</div>
+
+    <form class="form-body" id="signupForm" novalidate>
+      <div class="field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="e.g., Kelvin" required aria-describedby="nameError" />
+        <div class="helper" id="nameError"></div>
+      </div>
+
+      <div class="field">
+        <label for="profession">Profession</label>
+        <input type="text" id="profession" name="profession" placeholder="e.g., Motion Graphics" required aria-describedby="professionError" />
+        <div class="helper" id="professionError"></div>
+      </div>
+
+      <div class="field">
+        <label for="years">Years of Experience</label>
+        <input type="text" id="years" name="years" placeholder="e.g., 5 years" required aria-describedby="yearsError" />
+        <div class="helper" id="yearsError"></div>
+      </div>
+
+      <div class="field">
+        <label for="img">Upload Image</label>
+        <input type="file" id="img" name="img" accept="image/*" required aria-describedby="imgHelper imgError" />
+        <div class="helper" id="imgHelper">JPG/PNG, max 2MB</div>
+        <div class="helper" id="imgError"></div>
+      </div>
+
+      <!-- CHANGED: WhatsApp Link (url) -->
+      <div class="field">
+        <label for="whatsapp">WhatsApp Link</label>
+        <input
+          type="url"
+          id="whatsapp"
+          name="whatsapp"
+          placeholder="e.g., https://wa.me/2349157558463"
+          required
+          aria-describedby="whatsappError"
+        />
+        <div class="helper" id="whatsappError"></div>
+        <div class="helper">Tip: You can paste digits only (e.g., 2349157558463); we’ll convert to a wa.me link.</div>
+      </div>
+
+      <div class="field">
+        <label for="category">Category</label>
+        <select id="category" name="category" required aria-describedby="categoryError">
+          <option value="" disabled selected>Select category</option>
+          <option value="graphics">Graphics</option>
+          <option value="photography">Photography</option>
+          <option value="plumbing">Plumbing</option>
+          <option value="hair-stylist">Hair Stylist</option>
+          <option value="electrician">Electrician</option>
+          <option value="tailoring">Tailoring</option>
+        </select>
+        <div class="helper" id="categoryError"></div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="signup-btn">Upload</button>
+      </div>
+    </form>
+  </div>
+
+  <footer>
+    <div class="footerLine"></div>
+    <div class="footerContent">
+      <div class="tradeMark">
+        <h3 class="copyRight footerLinkHeader">Copyright ©2025 Tech Titans</h3>
+        <img src="/img/techTitanLogo.png" alt="techTitanLogo" class="techTitanLogo" />
+      </div>
+      <div class="exploreLinks">
+        <a href=""><h3 class="footerLinkHeader">Explore</h3></a>
+        <a href="/index.html">Home</a>
+        <a href="/search.html">Find Talent</a>
+        <a href="/index.html">Join As Pro</a>
+      </div>
+      <div class="exploreLinks">
+        <a href=""><h3 class="footerLinkHeader">Resources</h3></a>
+        <a href="">Terms</a>
+        <a href="">Privacy</a>
+        <a href="">Cookies</a>
+      </div>
+      <div class="exploreLinks">
+        <a href="/index.html"><h3 class="footerLinkHeader">Company</h3></a>
+        <a href="/index.html">About Us</a>
+        <a href="">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function setError(id, msg) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = msg || "";
+    }
+    function clearErrors() {
+      ["nameError","professionError","yearsError","imgError","whatsappError","categoryError"]
+        .forEach(id=>setError(id,""));
+      document.querySelectorAll("[aria-invalid]")
+        .forEach(i=>i.removeAttribute("aria-invalid"));
+    }
+
+    // Normalize to a valid WhatsApp link:
+    // - If digits only (10–15): -> https://wa.me/<digits>
+    // - If missing protocol but has wa.me / whatsapp.com: add https://
+    // - If URL not on wa.me or whatsapp.com => invalid
+    function normalizeWhatsAppLink(input) {
+      const raw = input.trim();
+      if (!raw) return { ok:false, value:"", error:"WhatsApp link is required." };
+
+      const digitsOnly = raw.replace(/\D/g, "");
+      if (/^\d{10,15}$/.test(raw) || (/^\d{10,15}$/.test(digitsOnly) && digitsOnly === raw)) {
+        return { ok:true, value:`https://wa.me/${raw}` };
+      }
+
+      let withProto = raw;
+      if (!/^https?:\/\//i.test(withProto)) {
+        withProto = "https://" + withProto;
+      }
+
+      try {
+        const url = new URL(withProto);
+        const host = url.hostname.toLowerCase();
+        if (!host.includes("wa.me") && !host.includes("whatsapp.com")) {
+          return { ok:false, value:"", error:"Use a wa.me or whatsapp.com link." };
+        }
+        // If it's whatsapp.com/send?phone=..., keep as-is
+        return { ok:true, value:url.toString() };
+      } catch {
+        return { ok:false, value:"", error:"Enter a valid WhatsApp link." };
+      }
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      clearErrors();
+
+      let valid = true;
+      const form = e.target;
+
+      const name = form.name.value.trim();
+      const profession = form.profession.value.trim();
+      let years = form.years.value.trim();
+      const fileInput = form.img;
+      const file = fileInput.files[0];
+      const category = form.category.value;
+
+      // Name
+      if (!name) {
+        setError("nameError","Name is required.");
+        form.name.setAttribute("aria-invalid","true");
+        valid = false;
+      }
+
+      // Profession
+      if (!profession) {
+        setError("professionError","Profession is required.");
+        form.profession.setAttribute("aria-invalid","true");
+        valid = false;
+      }
+
+      // Years
+      if (!years) {
+        setError("yearsError","Years of experience is required.");
+        form.years.setAttribute("aria-invalid","true");
+        valid = false;
+      } else if (/^\d+$/.test(years)) {
+        years = years + " years";
+      }
+
+      // Image
+      if (!file) {
+        setError("imgError","Image is required.");
+        fileInput.setAttribute("aria-invalid","true");
+        valid = false;
+      } else if (!file.type.startsWith("image/")) {
+        setError("imgError","File must be an image.");
+        fileInput.setAttribute("aria-invalid","true");
+        valid = false;
+      } else if (file.size > 2*1024*1024) {
+        setError("imgError","Image must be less than 2MB.");
+        fileInput.setAttribute("aria-invalid","true");
+        valid = false;
+      }
+
+      // WhatsApp LINK (normalized)
+      const waResult = normalizeWhatsAppLink(form.whatsapp.value);
+      if (!waResult.ok) {
+        setError("whatsappError", waResult.error);
+        form.whatsapp.setAttribute("aria-invalid","true");
+        valid = false;
+      }
+
+      // Category
+      if (!category) {
+        setError("categoryError","Category is required.");
+        form.category.setAttribute("aria-invalid","true");
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      const json = {
+        name,
+        profession,
+        years,
+        img: file ? file.name : "",
+        whatsapp: waResult.value,   // <-- link, not number
+        category
+      };
+      console.log(json);
+    });
+  </script>
+</body>
+</html>

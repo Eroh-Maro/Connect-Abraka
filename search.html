@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="search.css" />
+</head>
+
+<body>
+    <nav>
+      <a href="/index.html">
+        <div class="logo">
+          <img src="/img/logo.png" alt="Logo" class="logo-image" />
+          <div class="logoText">Connect Abk</div>
+        </div>
+      </a>
+      <ul>
+        <a href="/index.html">
+          <li>Home</li>
+        </a>
+        <a href="/join.html">
+          <li>Join</li>
+        </a>
+      </ul>
+      <div>
+        <a href="/search.html"
+          ><button type="button" class="connect">Connect</button></a
+        >
+      </div>
+    </nav>
+    <div class="content">
+        <img src="/img/searchBg.png" alt="" class="background-image">
+    </div>
+
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search here" />
+        <select class="category-select">
+            <option value="all" selected>All</option>
+            <option value="media">Media</option>
+            <option value="graphics">Graphics</option>
+            <option value="programming">Programming</option>
+            <option value="marketing">Marketing</option>
+            <option value="writing">Writing</option>
+            <option value="data">Data Analysis</option>
+            <option value="support">IT Support</option>
+            <option value="other">Other</option>
+        </select>
+        <button class="search-button">
+            <img src="/img/search.png" alt="Search" class="search-icon" />
+        </button>
+    </div>
+    <div class="card-grid">
+      <!-- Cards will be rendered by JS -->
+    </div>
+
+    <footer>
+        <div class="footerLine"></div>
+        <div class="footerContent">
+            <div class="tradeMark">
+                <h3 class="copyRight footerLinkHeader">Copyright ©2025 Tech Titans</h3>
+                <img src="/img/techTitanLogo.png" alt="techTitanLogo" class="techTitanLogo" />
+            </div>
+            <div class="exploreLinks">
+                <a href="">
+                    <h3 class="footerLinkHeader">Explore</h3>
+                </a>
+                <a href="/index.html">Home</a>
+                <a href="/search.html">Find Talent</a>
+                <a href="/join.html">Join As Pro</a>
+            </div>
+            <div class="exploreLinks">
+                <a href="">
+                    <h3 class="footerLinkHeader">Resources</h3>
+                </a>
+                <a href="">Terms</a>
+                <a href="">Privacy</a>
+                <a href="">Cookies</a>
+            </div>
+            <div class="exploreLinks">
+                <a href="">
+                    <h3 class="footerLinkHeader">Company</h3>
+                </a>
+                <a href="/index.html">About Us</a>
+                <a href="">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    const talents = [
+      {
+        name: "Maro",
+        profession: "Full Stack Developer",
+        years: "2 years",
+        img: "/img/maroCard.jpg",
+        whatsapp: "2348149489321",
+        category: "programming"
+      },
+      {
+        name: "Emzy",
+        profession: "Frontend Developer",
+        years: "6 months",
+        img: "/img/emzyCard.jpg",
+        whatsapp: "2349058904329",
+        category: "programming"
+      },
+      {
+        name: "Precious",
+        profession: "Mobile Developer",
+        years: "4 years",
+        img: "/img/person2.png",
+        whatsapp: "2349058904329",
+        category: "programming"
+      },      
+      {
+        name: "OY",
+        profession: "Graphic Designer",
+        years: "8 months",
+        img: "/img/oyCard.jpg",
+        whatsapp: "2349157558463",
+        category: "graphics"
+      },
+     {
+        name: "David",
+        profession: "Data Analyst",
+        years: "2 years",
+        img: "/img/person1.png",
+        whatsapp: "2349157558463",
+        category: "data"
+      },
+      {
+        name: "Benedicta",
+        profession: "UI/UX Designer",
+        years: "2 years",
+        img: "/img/benedictaCard.jpg",
+        whatsapp: "2348124971617",
+        category: "graphics"
+      },
+      {
+        name: "Jude",
+        profession: "IT Support",
+        years: "5 years",
+        img: "/img/judeCard.jpg",
+        whatsapp: "2348163316078",
+        category: "support"
+      },
+         {
+        name: "ThankGod",
+        profession: "Photographer",
+        years: "4 years",
+        img: "/img/person3.png",
+        whatsapp: "2349058904329",
+        category: "media"
+      },  
+               {
+        name: "Ella",
+        profession: "Content Writer",
+        years: "1 years",
+        img: "/img/person4.png",
+        whatsapp: "2349058904329",
+        category: "writing"
+      },  
+            {
+        name: "Kelvin",
+        profession: "Motion Graphics",
+        years: "5 years",
+        img: "/img/person6.png",
+        whatsapp: "2349157558463",
+        category: "graphics"
+      },
+               {
+        name: "Victory",
+        profession: "Virtual Assistant",
+        years: "3 years",
+        img: "/img/person5.png",
+        whatsapp: "2349058904329",
+        category: "other"
+      },  
+      {
+        name: "John",
+        profession: "Marketing Specialist",
+        years: "3 years",
+        img: "/img/johnCard.jpg",
+        whatsapp: "2347048656758",
+        category: "marketing"
+      }
+    ];
+
+    const cardGrid = document.querySelector('.card-grid');
+    const searchInput = document.querySelector('.search-input');
+    const categorySelect = document.querySelector('.category-select');
+
+    function renderCards(filteredTalents) {
+      cardGrid.innerHTML = '';
+      filteredTalents.forEach(talent => {
+        cardGrid.innerHTML += `
+          <div class="card">
+            <img src="${talent.img}" alt="${talent.name} - ${talent.profession}" class="card-img" />
+            <p class="card-info">${talent.name} &bull; ${talent.profession} &bull; ${talent.years}</p>
+            <a href="https://wa.me/${talent.whatsapp}" target="_blank" rel="noopener">
+              <button class="card-btn">WhatsApp</button>
+            </a>
+          </div>
+        `;
+      });
+    }
+
+    function filterTalents() {
+      const searchValue = searchInput.value.trim().toLowerCase();
+      const categoryValue = categorySelect.value;
+      let filtered = talents;
+
+      if (searchValue) {
+        filtered = filtered.filter(talent =>
+          talent.profession.toLowerCase().includes(searchValue)
+        );
+      }
+      if (categoryValue && categoryValue !== "all") {
+        filtered = filtered.filter(talent =>
+          talent.category === categoryValue
+        );
+      }
+      renderCards(filtered);
+    }
+
+    // Initial render
+    renderCards(talents);
+
+    // Filter on input
+    searchInput.addEventListener('input', filterTalents);
+
+    // Filter on category change
+    categorySelect.addEventListener('change', filterTalents);
+    </script>
+</body>
+
+</html>
